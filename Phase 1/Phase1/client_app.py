@@ -51,10 +51,15 @@ def train(msg: Message, context: Context):
 
         weight_deltas[key] = delta_value
     
+    total_bytes = sum([tensor.nelement() * tensor.element_size() for tensor in weight_deltas.values()])
+
+    total_bytes_in_mb = total_bytes / (1024 * 1024)
+    
     model_record = ArrayRecord(weight_deltas)
     metrics = {
         "train_loss": train_loss,
         "num-examples": len(trainloader.dataset),
+        "payload_size_mb": float(total_bytes_in_mb)
     }
     metric_record = MetricRecord(metrics)
     content = RecordDict({"arrays": model_record, "metrics": metric_record})
