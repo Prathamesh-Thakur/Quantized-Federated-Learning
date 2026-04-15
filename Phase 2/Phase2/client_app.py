@@ -54,10 +54,15 @@ def train(msg: Message, context: Context):
 
     quantized_weights, scaling_factors = quantize_weights(weight_deltas)
 
+    total_bytes = sum([tensor.nelement() * tensor.element_size() for tensor in quantized_weights.values()])
+
+    total_bytes_in_mb = total_bytes / (1024 * 1024)
+
     model_record = ArrayRecord(quantized_weights)
     metrics = {
         "train_loss": train_loss,
         "num-examples": len(trainloader.dataset),
+        "payload_size_mb": total_bytes_in_mb
     }
     metric_record = MetricRecord(metrics)
     content = RecordDict({"arrays": model_record, "metrics": metric_record, "scaling factors": ConfigRecord(scaling_factors)})
