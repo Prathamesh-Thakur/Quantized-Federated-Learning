@@ -25,8 +25,8 @@ serverapp = "Phase3.server_app:app"
 clientapp = "Phase3.client_app:app"
 
 [tool.flwr.app.config]
-num-server-rounds = 3
+num-server-rounds = 15
 fraction-evaluate = 0.5
-local-epochs = 1
-learning-rate = 0.004
-batch-size = 128
+local-epochs = 2
+learning-rate = 0.002
+batch-size = 64

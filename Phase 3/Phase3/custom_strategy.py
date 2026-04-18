@@ -6,8 +6,8 @@ from .utils import dequantize_weights
 
 class CustomFedAdam(FedAdam):
     def __init__(self, *args, **kwargs):
-        kwargs["eta"] = 0.01
-        kwargs["eta_l"] = 0.004
+        kwargs["eta"] = 0.002
+        kwargs["eta_l"] = 0.002
 
         return super().__init__(*args, **kwargs)
 
