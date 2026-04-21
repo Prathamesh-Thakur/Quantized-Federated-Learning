@@ -3,9 +3,9 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "quickstart-pytorch"
+name = "FL-pytorch-flower"
 version = "1.0.1"
-description = "Federated Learning with PyTorch and Flower (Quickstart Example)"
+description = "Federated Learning with Pytorch and Flower to test various global optimizer strategies with quantized data"
 license = "Apache-2.0"
 dependencies = [
     "flwr[simulation]>=1.28.0",

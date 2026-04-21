@@ -10,18 +10,28 @@ from medmnist import OCTMNIST
 
 
 class Net(nn.Module):
-    """Model (simple CNN adapted from 'PyTorch: A 60 Minute Blitz')"""
+    """Define the model to be used. Loaded model is ResNet18."""
 
     def __init__(self):
         super(Net, self).__init__()
+        
+        # Load the model from pytorch's model library
         self.model = models.resnet18(weights = "ResNet18_Weights.DEFAULT")
+        
+        # Modify the first layer to take in a single input channel since OCTMNIST images are grayscale
         self.model.conv1 = nn.Conv2d(1, 64, kernel_size = 7, stride = 2, padding = 3, bias = False)
+        
+        # Original number of output features of the model
         num_features = self.model.fc.in_features
+
+        # Add a new linear layer to map it to the 4 output classes of OCTMNIST
         self.model.fc = nn.Linear(num_features, 4)
 
     def forward(self, x):
+        # Run the model on the input
         return self.model(x) 
 
+# Pytorch transforms to be used. Resizing from 28x28 to 224x224 for ReseNet18, standardize and normalize.
 pytorch_transforms = Compose([Resize(224), ToTensor(), Normalize([0.5], [0.5])])
 
 
@@ -58,44 +68,82 @@ def load_data(partition_id: int, num_partitions: int, batch_size: int):
 
 
 def load_centralized_dataset():
-    """Load test set and return dataloader."""
+    """Load global(server) test set and return dataloader."""
     # Load entire test set
     dataset = OCTMNIST(split="test", download=True, transform = pytorch_transforms)
+    
+    # Return dataloader object
     return DataLoader(dataset, batch_size=128)
 
 
 def train(net, trainloader, epochs, lr, device):
     """Train the model on the training set."""
     net.to(device)  # move model to GPU if available
+
+    # Define CrossEntropy loss function.
     criterion = torch.nn.CrossEntropyLoss().to(device)
+    
+    # Use SGD as optimizer for clients
     optimizer = torch.optim.SGD(net.parameters(), lr=lr, momentum=0.9)
     net.train()
+    
+    # Maintain global running loss across epochs
     running_loss = 0.0
+
     for _ in range(epochs):
         for images, labels in trainloader:
+            # Transfer the images to device if available
             images = images.to(device)
+
+            # Squeeze the label tensor for CrossEntropy and transfer to device
             labels = labels.squeeze().long().to(device)
+
+            # Set optimizer to zero
             optimizer.zero_grad()
+
+            # Calculate loss
             loss = criterion(net(images), labels)
+            
+            # Backpropogation
             loss.backward()
             optimizer.step()
+
+            # Add current epoch loss to total loss
             running_loss += loss.item()
+    
+    # Calculate average loss across all epochs and data
     avg_trainloss = running_loss / (epochs * len(trainloader))
     return avg_trainloss
 
 
 def test(net, testloader, device):
     """Validate the model on the test set."""
-    net.to(device)
+    net.to(device) # Move model to GPU if available
+
+    # Define loss function
     criterion = torch.nn.CrossEntropyLoss()
     correct, loss = 0, 0.0
+    
+    # Set to eval
     with torch.no_grad():
         for images, labels in testloader:
+            # Transfer the images to device if available
             images = images.to(device)
+
+            # Squeeze the label tensor for CrossEntropy and transfer to device
             labels = labels.squeeze().long().to(device)
+            
+            # Get the outputs
             outputs = net(images)
+
+            # Calculate the loss
             loss += criterion(outputs, labels).item()
+            
+            # Check how many outputs are correct
             correct += (torch.max(outputs.data, 1)[1] == labels).sum().item()
+    
+    # Calculate accuracy and loss
     accuracy = correct / len(testloader.dataset)
     loss = loss / len(testloader)
+    
     return loss, accuracy
