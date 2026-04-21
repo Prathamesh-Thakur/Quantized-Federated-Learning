@@ -23,7 +23,6 @@ def train(msg: Message, context: Context):
     model = Net()
     model.load_state_dict(msg.content["arrays"].to_torch_state_dict())
     
-    initial_weights = copy.deepcopy(model.state_dict())
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     model.to(device)
 
@@ -45,14 +44,8 @@ def train(msg: Message, context: Context):
     # Construct and return reply Message
     updated_weights = copy.deepcopy(model.state_dict())
     updated_weights_cpu = {k: v.cpu() for k, v in updated_weights.items()}
-    weight_deltas = {}
 
-    for key in initial_weights:
-        delta_value = updated_weights_cpu[key] - initial_weights[key]
-
-        weight_deltas[key] = delta_value
-
-    quantized_weights, scaling_factors = quantize_weights(weight_deltas)
+    quantized_weights, scaling_factors = quantize_weights(updated_weights_cpu)
 
     total_bytes = sum([tensor.nelement() * tensor.element_size() for tensor in quantized_weights.values()])
 

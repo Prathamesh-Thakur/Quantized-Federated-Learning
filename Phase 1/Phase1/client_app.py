@@ -22,7 +22,6 @@ def train(msg: Message, context: Context):
     model = Net()
     model.load_state_dict(msg.content["arrays"].to_torch_state_dict())
     
-    initial_weights = copy.deepcopy(model.state_dict())
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     model.to(device)
 
@@ -44,18 +43,12 @@ def train(msg: Message, context: Context):
     # Construct and return reply Message
     updated_weights = copy.deepcopy(model.state_dict())
     updated_weights_cpu = {k: v.cpu() for k, v in updated_weights.items()}
-    weight_deltas = {}
-
-    for key in initial_weights:
-        delta_value = updated_weights_cpu[key] - initial_weights[key]
-
-        weight_deltas[key] = delta_value
     
-    total_bytes = sum([tensor.nelement() * tensor.element_size() for tensor in weight_deltas.values()])
+    total_bytes = sum([tensor.nelement() * tensor.element_size() for tensor in updated_weights_cpu.values()])
 
     total_bytes_in_mb = total_bytes / (1024 * 1024)
     
-    model_record = ArrayRecord(weight_deltas)
+    model_record = ArrayRecord(updated_weights_cpu)
     metrics = {
         "train_loss": train_loss,
         "num-examples": len(trainloader.dataset),
