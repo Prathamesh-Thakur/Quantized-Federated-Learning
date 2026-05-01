@@ -1,0 +1,59 @@
+INFO :      Strategy execution finished in 7793.71s
+INFO :      
+INFO :      Final results:
+INFO :      
+INFO :      	Global Arrays:
+INFO :      		ArrayRecord (42.671 MB)
+INFO :      	
+INFO :      	Aggregated ClientApp-side Train Metrics:
+INFO :      	{ 1: {'payload_size_mb': '4.2656e+01', 'train_loss': '3.8548e-01'},
+INFO :      	  2: {'payload_size_mb': '4.2656e+01', 'train_loss': '2.6526e-01'},
+INFO :      	  3: {'payload_size_mb': '4.2656e+01', 'train_loss': '2.1076e-01'},
+INFO :      	  4: {'payload_size_mb': '4.2656e+01', 'train_loss': '1.7346e-01'},
+INFO :      	  5: {'payload_size_mb': '4.2656e+01', 'train_loss': '1.3832e-01'},
+INFO :      	  6: {'payload_size_mb': '4.2656e+01', 'train_loss': '1.1392e-01'},
+INFO :      	  7: {'payload_size_mb': '4.2656e+01', 'train_loss': '9.1281e-02'},
+INFO :      	  8: {'payload_size_mb': '4.2656e+01', 'train_loss': '7.2284e-02'},
+INFO :      	  9: {'payload_size_mb': '4.2656e+01', 'train_loss': '5.8925e-02'},
+INFO :      	  10: {'payload_size_mb': '4.2656e+01', 'train_loss': '5.0093e-02'},
+INFO :      	  11: {'payload_size_mb': '4.2656e+01', 'train_loss': '3.5491e-02'},
+INFO :      	  12: {'payload_size_mb': '4.2656e+01', 'train_loss': '2.7472e-02'},
+INFO :      	  13: {'payload_size_mb': '4.2656e+01', 'train_loss': '2.4808e-02'},
+INFO :      	  14: {'payload_size_mb': '4.2656e+01', 'train_loss': '1.7094e-02'},
+INFO :      	  15: {'payload_size_mb': '4.2656e+01', 'train_loss': '1.9317e-02'}}
+INFO :      	
+INFO :      	Aggregated ClientApp-side Evaluate Metrics:
+INFO :      	{ 1: {'eval_acc': '8.9304e-01', 'eval_loss': '3.0482e-01'},
+INFO :      	  2: {'eval_acc': '9.1520e-01', 'eval_loss': '2.5024e-01'},
+INFO :      	  3: {'eval_acc': '9.2775e-01', 'eval_loss': '2.1345e-01'},
+INFO :      	  4: {'eval_acc': '9.3321e-01', 'eval_loss': '2.0494e-01'},
+INFO :      	  5: {'eval_acc': '9.3206e-01', 'eval_loss': '2.1765e-01'},
+INFO :      	  6: {'eval_acc': '9.3490e-01', 'eval_loss': '2.1009e-01'},
+INFO :      	  7: {'eval_acc': '9.3713e-01', 'eval_loss': '2.1301e-01'},
+INFO :      	  8: {'eval_acc': '9.3667e-01', 'eval_loss': '2.3149e-01'},
+INFO :      	  9: {'eval_acc': '9.4006e-01', 'eval_loss': '2.2607e-01'},
+INFO :      	  10: {'eval_acc': '9.4052e-01', 'eval_loss': '2.2527e-01'},
+INFO :      	  11: {'eval_acc': '9.4221e-01', 'eval_loss': '2.3015e-01'},
+INFO :      	  12: {'eval_acc': '9.3844e-01', 'eval_loss': '2.4960e-01'},
+INFO :      	  13: {'eval_acc': '9.4152e-01', 'eval_loss': '2.4404e-01'},
+INFO :      	  14: {'eval_acc': '9.4206e-01', 'eval_loss': '2.6962e-01'},
+INFO :      	  15: {'eval_acc': '9.4306e-01', 'eval_loss': '2.5622e-01'}}
+INFO :      	
+INFO :      	ServerApp-side Evaluate Metrics:
+INFO :      	{ 0: {'accuracy': '2.5600e-01', 'loss': '1.5195e+00'},
+INFO :      	  1: {'accuracy': '7.3600e-01', 'loss': '7.1308e-01'},
+INFO :      	  2: {'accuracy': '7.8300e-01', 'loss': '6.3492e-01'},
+INFO :      	  3: {'accuracy': '7.6700e-01', 'loss': '6.5919e-01'},
+INFO :      	  4: {'accuracy': '7.8600e-01', 'loss': '6.8156e-01'},
+INFO :      	  5: {'accuracy': '7.6800e-01', 'loss': '7.7525e-01'},
+INFO :      	  6: {'accuracy': '7.6200e-01', 'loss': '8.1369e-01'},
+INFO :      	  7: {'accuracy': '7.6000e-01', 'loss': '8.9645e-01'},
+INFO :      	  8: {'accuracy': '7.7000e-01', 'loss': '9.3110e-01'},
+INFO :      	  9: {'accuracy': '7.7000e-01', 'loss': '1.0194e+00'},
+INFO :      	  10: {'accuracy': '7.6300e-01', 'loss': '1.0385e+00'},
+INFO :      	  11: {'accuracy': '7.5500e-01', 'loss': '1.1929e+00'},
+INFO :      	  12: {'accuracy': '7.5900e-01', 'loss': '1.1791e+00'},
+INFO :      	  13: {'accuracy': '7.5700e-01', 'loss': '1.2449e+00'},
+INFO :      	  14: {'accuracy': '7.5000e-01', 'loss': '1.2990e+00'},
+INFO :      	  15: {'accuracy': '7.4600e-01', 'loss': '1.3382e+00'}}
+INFO :      

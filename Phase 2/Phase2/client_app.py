@@ -1,13 +1,14 @@
-"""pytorchexample: A Flower / PyTorch app."""
-
+# Import libraries
 import torch
 from flwr.app import ArrayRecord, Context, Message, MetricRecord, RecordDict, ConfigRecord
 from flwr.clientapp import ClientApp
 
+# Import model, data loader, training and testing functions
 from Phase2.task import Net, load_data
 from Phase2.task import test as test_fn
 from Phase2.task import train as train_fn
 
+# Import quantization function
 import copy
 from .utils import quantize_weights
 
@@ -40,24 +41,31 @@ def train(msg: Message, context: Context):
         msg.content["config"]["lr"],
         device,
     )
-
-    # Construct and return reply Message
     updated_weights = copy.deepcopy(model.state_dict())
+    
+    # Transfer the model weights to the CPU
     updated_weights_cpu = {k: v.cpu() for k, v in updated_weights.items()}
 
+    # Quantize the updated weights
     quantized_weights, scaling_factors = quantize_weights(updated_weights_cpu)
 
+    # Calculate total memory usage in bytes
     total_bytes = sum([tensor.nelement() * tensor.element_size() for tensor in quantized_weights.values()])
 
+    # Convert to MB
     total_bytes_in_mb = total_bytes / (1024 * 1024)
 
     model_record = ArrayRecord(quantized_weights)
+    
+    # Construct metrics dictionary
     metrics = {
         "train_loss": train_loss,
         "num-examples": len(trainloader.dataset),
         "payload_size_mb": total_bytes_in_mb
     }
     metric_record = MetricRecord(metrics)
+
+    # Construct and return reply Message
     content = RecordDict({"arrays": model_record, "metrics": metric_record, "scaling factors": ConfigRecord(scaling_factors)})
     return Message(content=content, reply_to=msg)
 
